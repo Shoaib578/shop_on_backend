@@ -117,12 +117,14 @@ router.get('/get_new_items',(req, res) => {
     let my_items = []
 
         items.forEach(data=>{
+            my_items.push(data)
+           
             if(data.item_for == user_phone_number){
-                my_items.push(data)
+                // my_items.push(data)
             }
         })
 
-        return res.send({
+        res.send({
             "items":my_items
         })
     })
