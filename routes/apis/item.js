@@ -6,7 +6,9 @@ const fs = require('fs');
 const NewItem = require('../../models/Newitem');
 const Group = require("../../models/Group")
 const GroupUsers = require('../../models/GroupsUsers')
-
+function addStr(str, index, stringToAdd){
+    return str.substring(0, index) + stringToAdd + str.substring(index, str.length);
+  }
 
 router.route('/add_item').post((req, res)=> {
     let item_name = req.body.item_name;
@@ -102,7 +104,10 @@ router.route('/search_item_by_sku_or_name').get((req,res)=>{
 
 
 router.get('/get_new_items',(req, res) => {
-    let user_phone_number = req.query.user_phone_number;
+    var user_phone_number = req.query.user_phone_number;
+    let zeroIndex = user_phone_number.charAt(0)
+  
+
     NewItem.aggregate([
         {
             $lookup:{
@@ -115,15 +120,26 @@ router.get('/get_new_items',(req, res) => {
     ])
     .then(items=>{
     let my_items = []
-
+    if(zeroIndex == " "){
+       let lastelement = addStr(user_phone_number,0,'+').charAt(user_phone_number.length - 1)
+       
         items.forEach(data=>{
-            my_items.push(data)
+            console.log(filter)
+            
+                if(data.item_for == addStr(user_phone_number,1,'+').slice(1,-1)+lastelement){
+                    my_items.push(data)
+                }
+            
            
-            if(data.item_for == user_phone_number){
-                // my_items.push(data)
-            }
         })
-
+    }else{
+        console.log('dd')
+        items.forEach(data=>{
+        if(data.item_for == user_phone_number){
+            my_items.push(data)
+        } 
+        })
+    }
         res.send({
             "items":my_items
         })
