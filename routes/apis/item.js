@@ -124,7 +124,7 @@ router.get('/get_new_items',(req, res) => {
        let lastelement = addStr(user_phone_number,0,'+').charAt(user_phone_number.length - 1)
        
         items.forEach(data=>{
-            console.log(filter)
+            
             
                 if(data.item_for == addStr(user_phone_number,1,'+').slice(1,-1)+lastelement){
                     my_items.push(data)
