@@ -31,17 +31,27 @@ router.post('/add_user',(req, res) => {
     let group_id = req.body.group_id
     let user_phone_number = req.body.user_phone_number
     let user_name = req.body.user_name
-    let group_user = new GroupsUsers({
-        group_id:group_id,
-        user_phone_number:user_phone_number,
-        user_name:user_name
+    GroupsUsers.find({$and: [ { group_id:group_id }, { user_phone_number:  user_phone_number} ]})
+    .then(data=>{
+        if(data == null){
+            let group_user = new GroupsUsers({
+                group_id:group_id,
+                user_phone_number:user_phone_number,
+                user_name:user_name
+                
+            })
         
+            group_user.save()
+            return res.send({
+                "msg":"user added to group successfully"
+            })
+        }else{
+            return res.send({
+                "msg":"This One User Already Exist in this group"
+            })
+        }
     })
-
-    group_user.save()
-    return res.send({
-        "msg":"user added to group successfully"
-    })
+    
 })
 
 
