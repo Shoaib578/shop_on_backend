@@ -148,9 +148,7 @@ router.route('/update_profile').post(async(req,res)=>{
   var filter ={ _id: user_id}
   let phone_no = req.body.phone_no
   let updateDoc=""
-await  Users.find({phone_no:phone_no})
-  .then(async(user)=>{
-    if(user == null){
+
       if(role == "buyer"){
     
         if(req.body.password){
@@ -229,12 +227,8 @@ await  Users.find({phone_no:phone_no})
       return res.send({
         "msg":"profile updated"
       })
-    }else{
-      return res.send({
-        "msg":"Phone number already exist in our database"
-      })
-    }
-  })
+   
+ 
   
 })
 
