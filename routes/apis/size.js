@@ -16,14 +16,24 @@ Sizes.find({user_id:user_id})
 router.route('/add').post((req,res)=>{
     let size = req.body.size
     let user_id = req.body.user_id
-    let new_size = new Sizes({
-        user_id:user_id,
-        size:size
+    Sizes.find({user_id:user_id,size:size})
+    .then(data=>{
+        if(data.length<1){
+            let new_size = new Sizes({
+                user_id:user_id,
+                size:size
+            })
+            new_size.save()
+            return res.send({
+                "msg":"Added"
+            })
+        }else{
+            return res.send({
+                "msg":"Size Already Exist"
+            })
+        }
     })
-    new_size.save()
-    return res.send({
-        "msg":"Added"
-    })
+    
 })
 
 

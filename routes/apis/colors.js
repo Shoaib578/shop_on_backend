@@ -15,14 +15,24 @@ Colors.find({user_id:user_id})
 router.route('/add').post((req,res)=>{
     let color = req.body.color
     let user_id = req.body.user_id
-    let new_color = new Colors({
-        user_id:user_id,
-        color:color
+    Colors.find({user_id:user_id,color:color})
+    .then(data=>{
+        if(data.length<1){
+            let new_color = new Colors({
+                user_id:user_id,
+                color:color
+            })
+            new_color.save()
+            return res.send({
+                "msg":"Added"
+            })
+        }else{
+           return res.send({
+                "msg":"Color Already Exist"
+            })
+        }
     })
-    new_color.save()
-    return res.send({
-        "msg":"Added"
-    })
+  
 })
 
 

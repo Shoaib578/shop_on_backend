@@ -12,15 +12,25 @@ let Users = require("../../models/Users");
 router.post('/add',(req, res) => {
 let group_name = req.body.group_name
 let user_id = req.body.user_id
-console.log(user_id)
-let group = new Group({
-    group_name: group_name,
-    added_by:user_id,
+Group.find({$and:[{added_by:user_id},{group_name:group_name}]})
+.then(data=>{
+    if(data.length<1){
+        let group = new Group({
+            group_name: group_name,
+            added_by:user_id,
+        })
+        group.save()
+        return res.send({
+            "msg":"group added successfully"
+        })
+    }else{
+        return res.send({
+            "msg":"This Group Already Exist"
+        })
+    }
 })
-group.save()
-return res.send({
-    "msg":"group added successfully"
-})
+
+
 
 
 })
@@ -31,9 +41,9 @@ router.post('/add_user',(req, res) => {
     let group_id = req.body.group_id
     let user_phone_number = req.body.user_phone_number
     let user_name = req.body.user_name
-    GroupsUsers.find({$and: [ { group_id:group_id }, { user_phone_number:  user_phone_number} ]})
+    GroupsUsers.find({$and: [ { group_id:group_id }, { user_name:  user_name.toString()} ]})
     .then(data=>{
-        if(data == null){
+        if(data.length<1){
             let group_user = new GroupsUsers({
                 group_id:group_id,
                 user_phone_number:user_phone_number,

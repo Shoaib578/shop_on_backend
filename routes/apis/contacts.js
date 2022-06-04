@@ -4,16 +4,25 @@ router.route('/add').post((req,res)=>{
     let user_name = req.body.user_name
     let phone_no = req.body.phone_no
     let added_by = req.body.added_by
-
-    let contact = new Contacts({
-        added_by:added_by,
-        user_name:user_name,
-        user_phone_no:phone_no
+    Contacts.find({$and:[{added_by:added_by},{user_name:user_name.toString()}]})
+    .then(data=>{
+        if(data.length == 0){
+            let contact = new Contacts({
+                added_by:added_by,
+                user_name:user_name,
+                user_phone_no:phone_no
+            })
+            contact.save()
+            return res.send({
+                "msg":"Added"
+            })
+        }else{
+            return res.send({
+                "msg":"This Contact Already Exist"
+            })
+        }
     })
-    contact.save()
-    return res.send({
-        "msg":"Added"
-    })
+  
 
 
 })
