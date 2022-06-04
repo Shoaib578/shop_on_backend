@@ -12,7 +12,7 @@ let Users = require("../../models/Users");
 router.post('/add',(req, res) => {
 let group_name = req.body.group_name
 let user_id = req.body.user_id
-Group.find({$and:[{added_by:user_id},{group_name:group_name}]})
+Group.find({$and:[{added_by:user_id},{group_name:group_name.toString()}]})
 .then(data=>{
     if(data.length<1){
         let group = new Group({

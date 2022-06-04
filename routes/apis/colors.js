@@ -15,7 +15,7 @@ Colors.find({user_id:user_id})
 router.route('/add').post((req,res)=>{
     let color = req.body.color
     let user_id = req.body.user_id
-    Colors.find({user_id:user_id,color:color})
+    Colors.find({user_id:user_id,color:color.toString()})
     .then(data=>{
         if(data.length<1){
             let new_color = new Colors({

@@ -9,14 +9,24 @@ let HashTags = require('../../models/HashTags')
 router.post('/add',(req, res) => {
     let user_id = req.body.user_id
     let hashtag = req.body.hashtag
-    let hash_tag = new HashTags({
-        hash_tag: hashtag,
-        user_id: user_id
+    HashTags.find({$and:[{user_id:user_id},{hash_tag:hashtag.toString()}]})
+    .then(data=>{
+        if(data.length == 0){
+            let hash_tag = new HashTags({
+                hash_tag: hashtag,
+                user_id: user_id
+            })
+            hash_tag.save()
+            return res.send({
+                "msg":"HashTag Added successfully"
+            })
+        }else{
+            return res.send({
+                "msg":"Hashtag already Exist"
+            })
+        }
     })
-    hash_tag.save()
-    return res.send({
-        "msg":"HashTag Added successfully"
-    })
+  
 })
 
 router.get("/get_hashtags",(req, res) => {

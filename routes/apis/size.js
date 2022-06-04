@@ -16,7 +16,7 @@ Sizes.find({user_id:user_id})
 router.route('/add').post((req,res)=>{
     let size = req.body.size
     let user_id = req.body.user_id
-    Sizes.find({user_id:user_id,size:size})
+    Sizes.find({user_id:user_id,size:size.toString()})
     .then(data=>{
         if(data.length<1){
             let new_size = new Sizes({
