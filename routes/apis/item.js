@@ -199,27 +199,31 @@ router.route('/delete_item').get((req,res)=>{
     .then(()=>{
         Order.deleteMany({item_id:item_id})
         .then(()=>{
-            Item.findById(item_id)
-            .then((data)=>{
-                console.log(data)
-                fs.unlink('public/uploads/'+data.item_image1,function(result){
-                    console.log(result)
-                })
-
-                fs.unlink('public/uploads/'+data.item_image2,function(result){
-                    console.log(result)
-                })
-
-                fs.unlink('public/uploads/'+data.item_image3,function(result){
-                    console.log(result)
-                })
-                Item.findByIdAndDelete(item_id)
-                .then(msg=>{
-                    return res.send({
-                        "msg":'Deleted'
+            NewItem.deleteMany({item_id:item_id})
+            .then(()=>{
+                Item.findById(item_id)
+                .then((data)=>{
+                    console.log(data)
+                    fs.unlink('public/uploads/'+data.item_image1,function(result){
+                        console.log(result)
+                    })
+    
+                    fs.unlink('public/uploads/'+data.item_image2,function(result){
+                        console.log(result)
+                    })
+    
+                    fs.unlink('public/uploads/'+data.item_image3,function(result){
+                        console.log(result)
+                    })
+                    Item.findByIdAndDelete(item_id)
+                    .then(msg=>{
+                        return res.send({
+                            "msg":'Deleted'
+                        })
                     })
                 })
             })
+           
            
         })
     })
