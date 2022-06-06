@@ -142,6 +142,25 @@ router.route('/profile_screen').get((req,res)=>{
 })
 
 
+router.route('/add_currency').post(async(req,res)=>{
+  let user_id = req.body.user_id
+  let currency = req.body.currency
+  var filter ={ _id: user_id}
+
+  let updateDoc = {
+    $set: { 
+     "supplier.currency":currency
+     }
+  }
+
+  await Users.updateMany(filter,updateDoc)
+
+  return res.send({
+    "msg":"Currency Added Successfully"
+  })
+
+})
+
 router.route('/update_profile').post(async(req,res)=>{
   let role = req.body.role
   let user_id = req.body.user_id
