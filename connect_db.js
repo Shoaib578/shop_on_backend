@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
  function connect (){
-    const uri = 'mongodb+srv://Shoaib:Games587@cluster0.yycq8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    const uri = ''
     try{
          mongoose.connect(uri,{ useNewUrlParser: true, useCreateIndex: true,useUnifiedTopology: true })
         const connection = mongoose.connection;
