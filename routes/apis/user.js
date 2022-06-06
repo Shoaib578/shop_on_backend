@@ -145,6 +145,7 @@ router.route('/profile_screen').get((req,res)=>{
 router.route('/add_currency').post(async(req,res)=>{
   let user_id = req.body.user_id
   let currency = req.body.currency
+  console.log(currency)
   var filter ={ _id: user_id}
 
   let updateDoc = {
@@ -153,7 +154,7 @@ router.route('/add_currency').post(async(req,res)=>{
      }
   }
 
-  await Users.updateMany(filter,updateDoc)
+  await Users.updateOne(filter,updateDoc)
 
   return res.send({
     "msg":"Currency Added Successfully"
