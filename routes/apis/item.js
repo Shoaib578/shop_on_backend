@@ -290,10 +290,10 @@ router.route('/delete_new_item').get(async(req,res)=>{
    
     let id = req.query.item_id
    
-    await NewItem.findByIdAndRemove(id)
+    await NewItem.findByIdAndDelete(id)
     .then(msg=>{
         console.log(msg)
-        return res.send({
+         res.send({
             "msg":"Deleted"
         })
     })
