@@ -287,10 +287,10 @@ router.route('/send_item').post((req,res)=>{
 
 
 router.route('/delete_new_item').get(async(req,res)=>{
-    console.log(req.query.item_id)
+   
     let id = req.query.item_id
-    console.log(id)
-    await NewItem.deleteOne({_id:id})
+   
+    await NewItem.findByIdAndRemove(id)
     .then(msg=>{
         console.log(msg)
         return res.send({
