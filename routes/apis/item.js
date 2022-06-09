@@ -511,8 +511,9 @@ router.route('/edit_item').post(async(req,res)=>{
 
 router.route('/search_item').get((req,res)=>{
     let search = req.query.search
-   
     let user_phone_number = req.query.user_phone_number
+    let zeroIndex = user_phone_number.charAt(0)
+
     console.log(user_phone_number)
     NewItem.aggregate([
         {
@@ -526,19 +527,35 @@ router.route('/search_item').get((req,res)=>{
     ])
     .then(item=>{
         let filtered_data= []
-        item.forEach(data=>{
-          
-                if(data.item_for == user_phone_number){
-                    if(data.items[0].item_name.toLowerCase().includes(search.toLowerCase())){
+        if(zeroIndex == " "){
+            let lastelement = addStr(user_phone_number,0,'+').charAt(user_phone_number.length - 1)
+            item.forEach(data=>{
+              
+                    if(data.item_for == addStr(user_phone_number,1,'+').slice(1,-1)+lastelement){
+                        if(data.items[0].item_name.toLowerCase().includes(search.toLowerCase())){
+                       
+                        
+                      
+                            filtered_data.push(data)
+                         }
+                    }
                    
-                    
-                  
-                        filtered_data.push(data)
-                     }
-                }
                
-           
+            })
+
+        }else{
+            item.forEach(data=>{
+            if(data.item_for == user_phone_number){
+                if(data.items[0].item_name.toLowerCase().includes(search.toLowerCase())){
+               
+                
+              
+                    filtered_data.push(data)
+                 }
+            }
         })
+        }
+        
 
         return res.send({
             "items":filtered_data
